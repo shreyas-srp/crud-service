@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crud-service-deployment
+  labels:
+    app: crud-service
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: crud-service
+  template:
+    metadata:
+      labels:
+        app: crud-service
+        branch: master
+    spec:
+      containers:
+      - name: crud-service
+        image: 644506256020.dkr.ecr.ca-central-1.amazonaws.com/blerxprepo:latest-dev
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi    
+        ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+        env:
+          - name: PORT
+            value: "80"
+          - name: DEPLOY_DATE
+            value: "{{DEPLOY_DATE}}"
+---
+kind: Service
+apiVersion: v1
+metadata:
+    namespace: default
+    name: crud-service
+spec:
+    selector:
+      app: crud-service
+    ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
