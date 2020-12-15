@@ -43,6 +43,21 @@ spec:
             value: "80"
           - name: DEPLOY_DATE
             value: "{{DEPLOY_DATE}}"
+          - name: MYSQL_URL
+            valueFrom:
+              secretKeyRef:
+                name: crud-service-mysql
+                key: url
+          - name: MYSQL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: crud-service-mysql
+                key: username
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: crud-service-mysql
+                key: password
 ---
 kind: Service
 apiVersion: v1
