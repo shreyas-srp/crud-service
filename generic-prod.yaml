@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: crud-service
-        image: 644506256020.dkr.ecr.ca-central-1.amazonaws.com/blerxprepo:latest-prod
+        image: 573181165769.dkr.ecr.ca-central-1.amazonaws.com/blrexprepo:latest-dev
         imagePullPolicy: Always
         resources:
           requests:
